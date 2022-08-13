@@ -1,9 +1,11 @@
-import express  from "express";
+
+import {Router} from "express";
 import { login, register } from "../controller/auth.controller.js";
 import {body } from 'express-validator';
+import { validation } from "../middlewares/validation.js";
 
 
-const router = express.Router()
+const router = Router()
 
 router.post('/register', [body("email", "formato de email oncorrecto")
   .trim().isEmail().normalizeEmail(),
@@ -15,7 +17,19 @@ router.post('/register', [body("email", "formato de email oncorrecto")
       throw new Error('No coinciden las contraseñas')
     } return value;
   })
-], register)
-router.post('/login', login)
+],
+  validation,
+  register)
+
+
+
+
+
+  router.post('/login',[body("email", "formato de email oncorrecto")
+  .trim().isEmail().normalizeEmail(),
+    body("password", "minimo 6 caracteres")
+    .trim().isLength({ min: 6 })],
+    validation,
+    login)
 
 export default router;
