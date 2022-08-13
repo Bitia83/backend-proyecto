@@ -1,8 +1,9 @@
 
 import {Router} from "express";
-import { login, register } from "../controller/auth.controller.js";
+import { infoUser, login, register } from "../controller/auth.controller.js";
 import {body } from 'express-validator';
 import { validation } from "../middlewares/validation.js";
+import { requireToken } from "../middlewares/requireToken.js";
 
 
 const router = Router()
@@ -28,8 +29,13 @@ router.post('/register', [body("email", "formato de email oncorrecto")
   router.post('/login',[body("email", "formato de email oncorrecto")
   .trim().isEmail().normalizeEmail(),
     body("password", "minimo 6 caracteres")
-    .trim().isLength({ min: 6 })],
+      .trim().isLength({ min: 6 })],
+    
     validation,
     login)
+
+
+
+router.get("/protected", requireToken, infoUser);
 
 export default router;
