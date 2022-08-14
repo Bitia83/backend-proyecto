@@ -1,6 +1,6 @@
 
 import {Router} from "express";
-import { infoUser, login, register } from "../controller/auth.controller.js";
+import { infoUser, login, register, refreshToken, logout } from "../controller/auth.controller.js";
 import {body } from 'express-validator';
 import { validation } from "../middlewares/validation.js";
 import { requireToken } from "../middlewares/requireToken.js";
@@ -37,5 +37,7 @@ router.post('/register', [body("email", "formato de email oncorrecto")
 
 
 router.get("/protected", requireToken, infoUser);
+router.get("/refresh", refreshToken);
+router.get("/logout", logout);
 
 export default router;
