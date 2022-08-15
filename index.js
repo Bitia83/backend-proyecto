@@ -18,11 +18,12 @@ const whiteList = [process.env.ORIGIN1, process.env.ORIGIN2]
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (whiteList.includes(origin)) {
-      return callback(null, origin)
-    }
+    if (!origin || whiteList.includes(origin)) {
+      return callback(null, origin);
+  }
     return callback("error de CORS origin: " + origin + " no autorizado!");
   },
+  credentials: true,
 }));
 
 app.use(express.json());

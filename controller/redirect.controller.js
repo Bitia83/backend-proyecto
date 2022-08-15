@@ -4,7 +4,7 @@ export const redirectLink = async (req, res) => {
     try {
         const { nanoLink } = req.params;
         const link = await Link.findOne({ nanoLink });
-
+        console.log(link);
         if (!link) return res.status(404).json({ error: "No existe el link" });
 
         return res.redirect(link.longLink);
